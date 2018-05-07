@@ -127,7 +127,7 @@ describe('CDS: Application Workflow Item', () => {
             pb.version = 12;
             pb.trigger = new PipelineBuildTrigger();
             pb.trigger.vcs_branch = 'master';
-            return Observable.of(pb);
+            return of(pb);
         });
         fixture.componentInstance.runPipeline();
         tick(1100);
@@ -207,7 +207,7 @@ describe('CDS: Application Workflow Item', () => {
             pb.version = 12;
             pb.trigger = new PipelineBuildTrigger();
             pb.trigger.vcs_branch = 'toto';
-            return Observable.of(pb);
+            return of(pb);
         });
         fixture.componentInstance.runPipeline();
         tick(1100);
@@ -382,7 +382,7 @@ describe('CDS: Application Workflow Item', () => {
 
         let appStore: ApplicationStore = injector.get(ApplicationStore);
         spyOn(appStore, 'addTrigger').and.callFake(() => {
-            return Observable.of(workflowItem.application);
+            return of(workflowItem.application);
         });
         spyOn(fixture.componentInstance.createTriggerModal, 'hide').and.callFake(() => true);
         fixture.componentInstance.triggerEvent('add');
@@ -393,7 +393,7 @@ describe('CDS: Application Workflow Item', () => {
 
         // Update trigger
         spyOn(appStore, 'updateTrigger').and.callFake(() => {
-            return Observable.of(workflowItem.application);
+            return of(workflowItem.application);
         });
         fixture.componentInstance.triggerEvent('update');
         expect(appStore.updateTrigger).toHaveBeenCalledWith('key1', 'app1', 'pip1', fixture.componentInstance.triggerInModal);
@@ -401,7 +401,7 @@ describe('CDS: Application Workflow Item', () => {
 
         // Delete trigger
         spyOn(appStore, 'removeTrigger').and.callFake(() => {
-            return Observable.of(workflowItem.application);
+            return of(workflowItem.application);
         });
         fixture.componentInstance.triggerEvent('delete');
         expect(appStore.removeTrigger).toHaveBeenCalledWith('key1', 'app1', 'pip1', fixture.componentInstance.triggerInModal);
@@ -449,7 +449,7 @@ describe('CDS: Application Workflow Item', () => {
         // Add scheduler
         let appStore: ApplicationStore = injector.get(ApplicationStore);
         spyOn(appStore, 'addScheduler').and.callFake(() => {
-            return Observable.of(workflowItem.application);
+            return of(workflowItem.application);
         });
         spyOn(fixture.componentInstance.createSchedulerModal, 'hide').and.callFake(() => true);
 

@@ -9,7 +9,7 @@ import {ToastService} from '../../../../shared/toast/ToastService';
 import {TranslateService} from '@ngx-translate/core';
 import {finalize} from 'rxjs/operators';
 import {WorkflowEventStore} from '../../../../service/workflow/workflow.event.store';
-import {Subscription} from 'rxjs/Subscription';
+import {Subscription} from 'rxjs';
 import {Workflow} from '../../../../model/workflow.model';
 
 declare var ansi_up: any;

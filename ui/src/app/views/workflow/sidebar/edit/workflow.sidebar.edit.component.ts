@@ -3,7 +3,7 @@ import {AutoUnsubscribe} from '../../../../shared/decorator/autoUnsubscribe';
 import {Project} from '../../../../model/project.model';
 import { Workflow} from '../../../../model/workflow.model';
 import {WorkflowSidebarMode, WorkflowSidebarStore} from '../../../../service/workflow/workflow.sidebar.store';
-import {Subscription} from 'rxjs/Subscription';
+import {Subscription} from 'rxjs';
 
 @Component({
     selector: 'app-workflow-sidebar-edit',

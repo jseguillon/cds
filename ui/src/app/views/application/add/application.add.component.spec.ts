@@ -98,7 +98,7 @@ describe('CDS: Application Add Component', () => {
         project.applications.push(app);
 
         spyOn(appStore, 'getApplicationResolver').and.callFake(() => {
-            return Observable.of(app);
+            return of(app);
         });
 
         fixture.componentInstance.project = project;
@@ -112,7 +112,7 @@ describe('CDS: Application Add Component', () => {
 
 
         spyOn(appStore, 'cloneApplication').and.callFake( () => {
-            return Observable.of(app);
+            return of(app);
         });
 
         fixture.componentInstance.createApplication();
@@ -153,8 +153,8 @@ class MockRouter {
 class MockActivatedRoutes extends ActivatedRoute {
     constructor() {
         super();
-        this.params = Observable.of({key: 'key1', appName: 'app1'});
-        this.queryParams = Observable.of({key: 'key1', appName: 'app1'});
+        this.params = of({key: 'key1', appName: 'app1'});
+        this.queryParams = of({key: 'key1', appName: 'app1'});
 
         this.snapshot = new ActivatedRouteSnapshot();
 
@@ -164,6 +164,6 @@ class MockActivatedRoutes extends ActivatedRoute {
             project: project
         };
 
-        this.data = Observable.of({ project: project });
+        this.data = of({ project: project });
     }
 }

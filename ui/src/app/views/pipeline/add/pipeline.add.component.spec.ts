@@ -100,7 +100,7 @@ describe('CDS: Pipeline Add Component', () => {
         fixture.componentInstance.selectedApplications.push('app2');
 
         spyOn(pipStore, 'createPipeline').and.callFake( () => {
-            return Observable.of(fixture.componentInstance.newPipeline);
+            return of(fixture.componentInstance.newPipeline);
         });
 
         fixture.componentInstance.createPipeline();
@@ -124,8 +124,8 @@ class MockRouter {
 class MockActivatedRoutes extends ActivatedRoute {
     constructor() {
         super();
-        this.params = Observable.of({key: 'key1', appName: 'app1'});
-        this.queryParams = Observable.of({key: 'key1', appName: 'app1'});
+        this.params = of({key: 'key1', appName: 'app1'});
+        this.queryParams = of({key: 'key1', appName: 'app1'});
 
         this.snapshot = new ActivatedRouteSnapshot();
 
@@ -135,6 +135,6 @@ class MockActivatedRoutes extends ActivatedRoute {
             project: project
         };
 
-        this.data = Observable.of({ project: project });
+        this.data = of({ project: project });
     }
 }

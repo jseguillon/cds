@@ -147,10 +147,10 @@ class MockStore {
     }
 
     connectRepository(key: string, currentName: string, repoManName: string, repoFullname: string) {
-        return  Observable.of({ name: 'app'});
+        return  of({ name: 'app'});
     }
     removeRepository(key: string, currentName: string, repoManName: string, repoFullname: string) {
-        return  Observable.of({ name: 'app'});
+        return  of({ name: 'app'});
     }
 }
 

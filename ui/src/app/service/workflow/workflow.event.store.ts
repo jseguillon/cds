@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {WorkflowNodeRun, WorkflowRun} from '../../model/workflow.run.model';
 import {Map} from 'immutable';
-import {Observable} from 'rxjs/Observable';
 import {WorkflowNode, WorkflowNodeHook, WorkflowNodeJoin} from '../../model/workflow.model';
 import {WorkflowSidebarMode, WorkflowSidebarStore} from './workflow.sidebar.store';
 import {WorkflowRunService} from './run/workflow.run.service';

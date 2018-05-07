@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Operation, PerformAsCodeResponse} from '../../model/operation.model';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 @Injectable()
 export class ImportAsCodeService {
@@ -14,12 +15,13 @@ export class ImportAsCodeService {
     }
 
     create(key: string, uuid: string): Observable<PerformAsCodeResponse> {
-        return this._http.post<PerformAsCodeResponse>('/import/' + key + '/' + uuid + '/perform', null, {observe: 'response'}).map(res => {
+        return this._http.post<PerformAsCodeResponse>('/import/' + key + '/' + uuid + '/perform', null,
+            {observe: 'response'}).pipe(map(res => {
             let headers: HttpHeaders = res.headers;
             let resp = new PerformAsCodeResponse();
             resp.workflowName = headers.get('X-Api-Workflow-Name');
             resp.msgs = res.body;
             return resp;
-        });
+        }));
     }
 }

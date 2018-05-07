@@ -26,7 +26,7 @@ describe('CDS: LoginComponent', () => {
                 UserService,
                 AuthentificationStore,
                 { provide: Router, useClass: MockRouter},
-                { provide: ActivatedRoute, useValue: { queryParams: Observable.of({redirection: null})} },
+                { provide: ActivatedRoute, useValue: { queryParams: of({redirection: null})} },
             ],
             imports : [
                 AppModule,

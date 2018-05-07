@@ -134,7 +134,7 @@ describe('CDS: Application Workflow', () => {
 
             app.pipelines = pips;
 
-            return Observable.of(mapApp.set('key1-app1', app));
+            return of(mapApp.set('key1-app1', app));
         });
         fixture.componentInstance.updatePipelineList();
         expect(fixture.componentInstance.appPipelines.length).toBe(2);

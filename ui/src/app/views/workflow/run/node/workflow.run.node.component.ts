@@ -11,7 +11,7 @@ import {first} from 'rxjs/operators';
 import {EventSubscription} from '../../../../model/event.model';
 import {WorkflowEventStore} from '../../../../service/workflow/workflow.event.store';
 import {EventStore} from '../../../../service/event/event.store';
-import {Subscription} from 'rxjs/Subscription';
+import {Subscription} from 'rxjs';
 
 @Component({
     selector: 'app-workflow-run-node',

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Map, List} from 'immutable';
-import {Observable} from 'rxjs/Observable';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject'
+import {Observable, BehaviorSubject, of} from 'rxjs';
+import {map} from 'rxjs/operators';
 import {Application} from '../../model/application.model';
 import {ApplicationService} from './application.service';
 import {RepositoryPoller} from '../../model/polling.model';
@@ -14,7 +14,7 @@ import {Trigger} from '../../model/trigger.model';
 import {NavbarRecentData} from '../../model/navbar.model';
 import {Notification} from '../../model/notification.model';
 import {Scheduler} from '../../model/scheduler.model';
-import 'rxjs/add/observable/of';
+
 import {Key} from '../../model/keys.model';
 
 
@@ -58,12 +58,12 @@ export class ApplicationStore {
         let appKey = key + '-' + appName;
 
         if (store.size === 0 || !store.get(appKey)) {
-            return this._applicationService.getApplication(key, appName, filter).map( res => {
+            return this._applicationService.getApplication(key, appName, filter).pipe(map( res => {
                 this._application.next(store.set(appKey, res));
                 return res;
-            });
+            }));
         } else {
-            return Observable.of(store.get(appKey));
+            return of(store.get(appKey));
         }
     }
 
@@ -135,7 +135,7 @@ export class ApplicationStore {
      * @returns Observable<Application>
      */
     cloneApplication(key: string, appName: string, app: Application): Observable<Application> {
-        return this._applicationService.cloneApplication(key, appName, app).map(appResult => appResult);
+        return this._applicationService.cloneApplication(key, appName, app).pipe(map(appResult => appResult));
     }
 
     /**
@@ -145,7 +145,7 @@ export class ApplicationStore {
      * @returns Observable<Application>
      */
     createApplication(key: string, app: Application): Observable<Application> {
-        return this._applicationService.createApplication(key, app).map(appResult => appResult);
+        return this._applicationService.createApplication(key, app).pipe(map(appResult => appResult));
     }
 
     /**
@@ -156,7 +156,7 @@ export class ApplicationStore {
      * @returns {Observable<Application>}
      */
     updateApplication(key: string, oldName: string, appli: Application): Observable<Application> {
-        return this._applicationService.updateApplication(key, oldName, appli).map(app => {
+        return this._applicationService.updateApplication(key, oldName, appli).pipe(map(app => {
             let cache = this._application.getValue();
             let appKey = key + '-' + oldName;
             if (cache.get(appKey)) {
@@ -169,7 +169,7 @@ export class ApplicationStore {
                 this._projectStore.updateApplicationName(key, oldName, appli.name);
             }
             return app;
-        });
+        }));
     }
 
     /**
@@ -179,7 +179,7 @@ export class ApplicationStore {
      * @returns {Observable<boolean>}
      */
     deleteApplication(key: string, appName: string): Observable<boolean> {
-        return this._applicationService.deleteApplication(key, appName).map(res => {
+        return this._applicationService.deleteApplication(key, appName).pipe(map(res => {
 
             // Remove from application cache
             let appKey = key + '-' + appName;
@@ -194,7 +194,7 @@ export class ApplicationStore {
             this._recentApplications.next(List(recentApp));
 
             return res;
-        });
+        }));
     }
 
     removeFromStore(appKey: string) {
@@ -212,7 +212,7 @@ export class ApplicationStore {
      */
     connectRepository(key: string, currentName: string, repoManName: string, repoFullname: string): Observable<Application> {
         return this._applicationService.connectRepository(key, currentName, repoManName, repoFullname)
-            .map(app => {
+            .pipe(map(app => {
                 let cache = this._application.getValue();
                 let appKey = key + '-' + currentName;
                 let appToUpdate = cache.get(appKey);
@@ -223,7 +223,7 @@ export class ApplicationStore {
                     this._application.next(cache.set(appKey, appToUpdate));
                 }
                 return app;
-            });
+            }));
     }
 
     /**
@@ -233,7 +233,7 @@ export class ApplicationStore {
      */
     removeRepository(key: string, currentName: string, repoManName: string): Observable<Application> {
         return this._applicationService.removeRepository(key, currentName, repoManName)
-            .map(app => {
+            .pipe(map(app => {
                 let cache = this._application.getValue();
                 let appKey = key + '-' + currentName;
                 if (cache.get(appKey)) {
@@ -244,7 +244,7 @@ export class ApplicationStore {
                     this._application.next(cache.set(appKey, pToUpdate));
                 }
                 return app;
-            });
+            }));
     }
 
     /**
@@ -256,9 +256,9 @@ export class ApplicationStore {
      * @returns {Observable<Application>}
      */
     addPoller(key: string, appName: string, pipName: string, poller: RepositoryPoller): Observable<Application> {
-        return this._applicationService.addPoller(key, appName, pipName, poller).map(app => {
+        return this._applicationService.addPoller(key, appName, pipName, poller).pipe(map(app => {
             return this.refreshApplicationWorkflowCache(key, appName, app);
-        });
+        }));
     }
 
     /**
@@ -269,9 +269,9 @@ export class ApplicationStore {
      * @returns {Observable<Application>}
      */
     updatePoller(key: string, appName: string, pipName: string, poller: RepositoryPoller): Observable<Application> {
-        return this._applicationService.updatePoller(key, appName, pipName, poller).map(app => {
+        return this._applicationService.updatePoller(key, appName, pipName, poller).pipe(map(app => {
             return this.refreshApplicationWorkflowCache(key, appName, app);
-        });
+        }));
     }
 
     /**
@@ -282,9 +282,9 @@ export class ApplicationStore {
      * @returns {Observable<Application>}
      */
     deletePoller(key: string, appName: string, poller: RepositoryPoller): Observable<Application> {
-        return this._applicationService.deletePoller(key, appName, poller.pipeline.name).map( app => {
+        return this._applicationService.deletePoller(key, appName, poller.pipeline.name).pipe(map( app => {
            return this.refreshApplicationWorkflowCache(key, appName, app);
-        });
+        }));
     }
 
     /**
@@ -296,9 +296,9 @@ export class ApplicationStore {
      */
     addHook(p: Project, a: Application, hook: Hook): Observable<Application> {
         return this._applicationService.addHook(p.key, a.name, a.vcs_server, a.repository_fullname, hook.pipeline.name)
-            .map( app => {
+            .pipe(map( app => {
                 return this.refreshApplicationWorkflowCache(p.key, a.name, app);
-        });
+        }));
     }
 
     /**
@@ -310,9 +310,9 @@ export class ApplicationStore {
      */
     updateHook(p: Project, a: Application, pipName: string, h: Hook): Observable<Application> {
         return this._applicationService.updateHook(p.key, a.name, pipName, h)
-            .map( app => {
+            .pipe(map( app => {
                 return this.refreshApplicationWorkflowCache(p.key, a.name, app);
-            });
+            }));
     }
 
     /**
@@ -323,9 +323,9 @@ export class ApplicationStore {
      * @returns {Observable<Application>}
      */
     removeHook(p: Project, a: Application, h: Hook): Observable<Application> {
-        return this._applicationService.deleteHook(p.key, a.name, h.id).map(app => {
+        return this._applicationService.deleteHook(p.key, a.name, h.id).pipe(map(app => {
             return this.refreshApplicationWorkflowCache(p.key, a.name, app);
-        });
+        }));
     }
 
     /**
@@ -336,9 +336,9 @@ export class ApplicationStore {
      * @returns {Observable<Application>}
      */
     addVariable(key: string, appName: string, v: Variable): Observable<Application> {
-        return this._applicationService.addVariable(key, appName, v).map(app => {
+        return this._applicationService.addVariable(key, appName, v).pipe(map(app => {
             return this.refreshApplicationVariableCache(key, appName, app);
-        });
+        }));
     }
 
     /**
@@ -349,9 +349,9 @@ export class ApplicationStore {
      * @returns {Observable<Application>}
      */
     updateVariable(key: string, appName: string, v: Variable): Observable<Application> {
-        return this._applicationService.updateVariable(key, appName, v).map(app => {
+        return this._applicationService.updateVariable(key, appName, v).pipe(map(app => {
             return this.refreshApplicationVariableCache(key, appName, app);
-        });
+        }));
     }
 
     /**
@@ -362,9 +362,9 @@ export class ApplicationStore {
      * @returns {Observable<Application>}
      */
     removeVariable(key: string, appName: string, v: Variable): Observable<Application> {
-        return this._applicationService.removeVariable(key, appName, v).map(app => {
+        return this._applicationService.removeVariable(key, appName, v).pipe(map(app => {
             return this.refreshApplicationVariableCache(key, appName, app);
-        });
+        }));
     }
 
     /**
@@ -395,9 +395,9 @@ export class ApplicationStore {
      * @returns {Observable<Application>}
      */
     addPermission(key: string, appName: string, gp: GroupPermission): Observable<Application> {
-        return this._applicationService.addPermission(key, appName, gp).map(app => {
+        return this._applicationService.addPermission(key, appName, gp).pipe(map(app => {
             return this.refreshApplicationPermissionCache(key, appName, app);
-        });
+        }));
     }
 
     /**
@@ -408,9 +408,9 @@ export class ApplicationStore {
      * @returns {Observable<Application>}
      */
     updatePermission(key: string, appName: string, gp: GroupPermission): Observable<Application> {
-        return this._applicationService.updatePermission(key, appName, gp).map(app => {
+        return this._applicationService.updatePermission(key, appName, gp).pipe(map(app => {
             return this.refreshApplicationPermissionCache(key, appName, app);
-        });
+        }));
     }
 
     /**
@@ -421,9 +421,9 @@ export class ApplicationStore {
      * @returns {Observable<Application>}
      */
     removePermission(key: string, appName: string, gp: GroupPermission): Observable<Application> {
-        return this._applicationService.removePermission(key, appName, gp).map(app => {
+        return this._applicationService.removePermission(key, appName, gp).pipe(map(app => {
             return this.refreshApplicationPermissionCache(key, appName, app);
-        });
+        }));
     }
 
     /**
@@ -455,9 +455,9 @@ export class ApplicationStore {
      * @returns {Observable<Application>}
      */
     addTrigger(key: string, appName: string, pipName: string, t: Trigger): Observable<Application> {
-        return this._applicationService.addTrigger(key, appName, pipName, t).map( app => {
+        return this._applicationService.addTrigger(key, appName, pipName, t).pipe(map( app => {
             return this.refreshApplicationWorkflowCache(key, appName, app);
-        });
+        }));
     }
 
     /**
@@ -469,9 +469,9 @@ export class ApplicationStore {
      * @returns {Observable<Application>}
      */
     updateTrigger(key: string, appName: string, pipName: string, t: Trigger): Observable<Application> {
-        return this._applicationService.updateTrigger(key, appName, pipName, t).map( app => {
+        return this._applicationService.updateTrigger(key, appName, pipName, t).pipe(map( app => {
             return this.refreshApplicationWorkflowCache(key, appName, app);
-        });
+        }));
     }
 
     /**
@@ -483,9 +483,9 @@ export class ApplicationStore {
      * @returns {Observable<Application>}
      */
     removeTrigger(key: string, appName: string, pipName: string, t: Trigger): Observable<Application> {
-        return this._applicationService.removeTrigger(key, appName, pipName, t).map( app => {
+        return this._applicationService.removeTrigger(key, appName, pipName, t).pipe(map( app => {
             return this.refreshApplicationWorkflowCache(key, appName, app);
-        });
+        }));
     }
 
     /**
@@ -516,15 +516,15 @@ export class ApplicationStore {
      * @returns {Uint8Array|Uint8ClampedArray|Application[]|Int8Array|Promise<any[]>|Int32Array|any}
      */
     addNotifications(key: string, appName: string, notifications: Array<Notification>): Observable<Application> {
-        return this._applicationService.addNotifications(key, appName, notifications).map( app => {
+        return this._applicationService.addNotifications(key, appName, notifications).pipe(map( app => {
            return this.refreshApplicationNotificationsCache(key, appName, app);
-        });
+        }));
     }
 
     updateNotification(key: string, appName: string, pipName: string, notification: Notification): Observable<Application> {
-        return this._applicationService.updateNotification(key, appName, pipName, notification).map( app => {
+        return this._applicationService.updateNotification(key, appName, pipName, notification).pipe(map( app => {
             return this.refreshApplicationNotificationsCache(key, appName, app);
-        });
+        }));
     }
 
     /**
@@ -534,9 +534,9 @@ export class ApplicationStore {
      * @param pipName Pipeline name
      */
     deleteNotification(key: string, appName: string, pipName: string, envName?: string): Observable<Application> {
-        return this._applicationService.deleteNotification(key, appName, pipName, envName).map( app => {
+        return this._applicationService.deleteNotification(key, appName, pipName, envName).pipe(map( app => {
             return this.refreshApplicationNotificationsCache(key, appName, app);
-        });
+        }));
     }
 
     /**
@@ -567,9 +567,9 @@ export class ApplicationStore {
      * @returns {Observable<Application>}
      */
     attachPipelines(key: string, appName: string, pipelines: Array<string>): Observable<Application> {
-        return this._applicationService.attachPipelines(key, appName, pipelines).map( app => {
+        return this._applicationService.attachPipelines(key, appName, pipelines).pipe(map( app => {
             return this.refreshApplicationPipelineCache(key, appName, app);
-        });
+        }));
     }
 
     /**
@@ -601,9 +601,9 @@ export class ApplicationStore {
      * @returns {Observable<Application>}
      */
     detachPipeline(key: string, appName: string, pipName: string): Observable<Application> {
-        return this._applicationService.detachPipelines(key, appName, pipName).map( app => {
+        return this._applicationService.detachPipelines(key, appName, pipName).pipe(map( app => {
             return this.refreshApplicationPipelineCache(key, appName, app);
-        });
+        }));
     }
 
     /**
@@ -614,7 +614,7 @@ export class ApplicationStore {
      * @returns {OperatorFunction<Key>}
      */
     addKey(key: string, appName: string, k: Key): Observable<Key> {
-        return this._applicationService.addKey(key, appName, k).map( () => {
+        return this._applicationService.addKey(key, appName, k).pipe(map( () => {
             let cache = this._application.getValue();
             let appKey = key + '-' + appName;
             let appToUpdate = cache.get(appKey);
@@ -626,7 +626,7 @@ export class ApplicationStore {
                 this._application.next(cache.set(appKey, appToUpdate));
             }
             return k;
-        });
+        }));
     }
 
     /**
@@ -637,7 +637,7 @@ export class ApplicationStore {
      * @returns {OperatorFunction<boolean>}
      */
     removeKey(key: string, appName: string, k: Key): Observable<boolean> {
-        return this._applicationService.removeKey(key, appName, k.name).map( () => {
+        return this._applicationService.removeKey(key, appName, k.name).pipe(map( () => {
             let cache = this._application.getValue();
             let appKey = key + '-' + appName;
             let appToUpdate = cache.get(appKey);
@@ -649,7 +649,7 @@ export class ApplicationStore {
                 this._application.next(cache.set(appKey, appToUpdate));
             }
             return true;
-        });
+        }));
     }
 
     /**
@@ -661,9 +661,9 @@ export class ApplicationStore {
      * @returns {Observable<Application>}
      */
     addScheduler(key: string, appName: string, pipName: string, scheduler: Scheduler): Observable<Application> {
-        return this._applicationService.addScheduler(key, appName, pipName, scheduler).map( app => {
+        return this._applicationService.addScheduler(key, appName, pipName, scheduler).pipe(map( app => {
             return this.refreshApplicationWorkflowCache(key, appName, app);
-        });
+        }));
     }
 
     /**
@@ -675,9 +675,9 @@ export class ApplicationStore {
      * @returns {Observable<Application>}
      */
     updateScheduler(key: string, appName: string, pipName: string, scheduler: Scheduler): Observable<Application> {
-        return this._applicationService.updateScheduler(key, appName, pipName, scheduler).map( app => {
+        return this._applicationService.updateScheduler(key, appName, pipName, scheduler).pipe(map( app => {
             return this.refreshApplicationWorkflowCache(key, appName, app);
-        });
+        }));
     }
 
     /**
@@ -689,8 +689,8 @@ export class ApplicationStore {
      * @returns {Observable<Application>}
      */
     deleteScheduler(key: string, appName: string, pipName: string, scheduler: Scheduler): Observable<Application> {
-        return this._applicationService.deleteScheduler(key, appName, pipName, scheduler).map( app => {
+        return this._applicationService.deleteScheduler(key, appName, pipName, scheduler).pipe(map( app => {
             return this.refreshApplicationWorkflowCache(key, appName, app);
-        });
+        }));
     }
 }

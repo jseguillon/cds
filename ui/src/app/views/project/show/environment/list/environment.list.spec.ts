@@ -87,7 +87,7 @@ class MockActivatedRoutes extends ActivatedRoute {
     constructor() {
         super();
 
-        this.queryParams = Observable.of({envName: 'prod'});
+        this.queryParams = of({envName: 'prod'});
     }
 }
 

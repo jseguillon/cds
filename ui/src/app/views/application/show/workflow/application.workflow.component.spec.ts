@@ -88,14 +88,14 @@ describe('CDS: Application Workflow', () => {
         // Create spy
         let workflowService: ApplicationWorkflowService = injector.get(ApplicationWorkflowService);
         spyOn(workflowService, 'getRemotes').and.callFake(() => {
-            return Observable.of([{ 'name' : 'barremote', url: 'https://github.com/barremote/barremote.git' }]);
+            return of([{ 'name' : 'barremote', url: 'https://github.com/barremote/barremote.git' }]);
         });
         spyOn(workflowService, 'getBranches').and.callFake(() => {
-            return Observable.of([{ 'display_id' : 'branche1', default: true}, { 'display_id' : 'branche2'}, { 'display_id' : 'master'},
+            return of([{ 'display_id' : 'branche1', default: true}, { 'display_id' : 'branche2'}, { 'display_id' : 'master'},
                 { 'display_id' : 'branche3' }]);
         });
         spyOn(workflowService, 'getVersions').and.callFake(() => {
-            return Observable.of([1, 2, 3]);
+            return of([1, 2, 3]);
         });
 
         // Run component initialisation

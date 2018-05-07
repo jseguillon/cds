@@ -90,7 +90,7 @@ describe('CDS: Project RepoManager List Component', () => {
         tick(250);
 
         spyOn(projectStore, 'disconnectRepoManager').and.callFake(() => {
-            return Observable.of(p);
+            return of(p);
         });
 
         let compiled = fixture.debugElement.nativeElement;

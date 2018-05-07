@@ -10,8 +10,9 @@ import {cloneDeep} from 'lodash';
 import {Project} from '../../../../../model/project.model';
 import {WorkflowStore} from '../../../../../service/workflow/workflow.store';
 import {HookEvent} from '../hook.event';
-import {first, finalize} from 'rxjs/operators';
-import {Observable} from 'rxjs/Observable';
+import {zip} from 'rxjs';
+import {first, finalize, map} from 'rxjs/operators';
+
 
 @Component({
     selector: 'app-workflow-node-hook-form',
@@ -79,22 +80,22 @@ export class WorkflowNodeHookFormComponent {
 
     show(): void {
         this.loadingModels = true;
-        Observable.zip(
+        zip(
             this._hookService.getHookModel(this.project, this.workflow, this.node),
-            this._workflowStore.getTriggerCondition(this.project.key, this.workflow.name, this.node.id),
-            (hms, wtc) => {
+            this._workflowStore.getTriggerCondition(this.project.key, this.workflow.name, this.node.id)
+        ).pipe(
+            first(),
+            map(() => (hms, wtc) => {
                 this.hooksModel = hms;
                 if (this._hook && this._hook.model) {
                     this.selectedHookModel = this.hooksModel.find(hm => hm.id === this._hook.model.id);
                 }
                 if (this.selectedHookModel != null && this.hook.id) {
-                  this.updateMode = true;
+                    this.updateMode = true;
                 }
                 this.operators = wtc.operators;
                 this.conditionNames = wtc.names;
-            }
-        ).pipe(
-            first(),
+            }),
             finalize(() => this.loadingModels = false)
         )
         .subscribe();

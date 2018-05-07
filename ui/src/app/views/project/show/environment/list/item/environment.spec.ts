@@ -100,7 +100,7 @@ describe('CDS: Environment Component', () => {
         e.name = 'production';
         let projectStore: ProjectStore = this.injector.get(ProjectStore);
         spyOn(projectStore, 'renameProjectEnvironment').and.callFake(() => {
-           return Observable.of(project);
+           return of(project);
         });
 
         compiled.querySelector('button[name="renamebtn"]').click();
@@ -132,7 +132,7 @@ describe('CDS: Environment Component', () => {
 
         let projectStore: ProjectStore = this.injector.get(ProjectStore);
         spyOn(projectStore, 'deleteProjectEnvironment').and.callFake(() => {
-            return Observable.of(project);
+            return of(project);
         });
 
         let compiled = fixture.debugElement.nativeElement;
@@ -173,7 +173,7 @@ describe('CDS: Environment Component', () => {
 
         let projectStore: ProjectStore = this.injector.get(ProjectStore);
         spyOn(projectStore, 'addEnvironmentVariable').and.callFake(() => {
-            return Observable.of(project);
+            return of(project);
         });
 
         fixture.componentInstance.variableEvent(event);
@@ -182,7 +182,7 @@ describe('CDS: Environment Component', () => {
         // Update variable
         event.type = 'update';
         spyOn(projectStore, 'updateEnvironmentVariable').and.callFake(() => {
-            return Observable.of(project);
+            return of(project);
         });
         fixture.componentInstance.variableEvent(event);
         expect(projectStore.updateEnvironmentVariable).toHaveBeenCalledWith('key1', 'prod', v);
@@ -190,7 +190,7 @@ describe('CDS: Environment Component', () => {
         // Delete variable
         event.type = 'delete';
         spyOn(projectStore, 'removeEnvironmentVariable').and.callFake(() => {
-            return Observable.of(project);
+            return of(project);
         });
         fixture.componentInstance.variableEvent(event);
         expect(projectStore.removeEnvironmentVariable).toHaveBeenCalledWith('key1', 'prod', v);

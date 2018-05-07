@@ -242,20 +242,20 @@ class MockProjectService extends ProjectService {
                     proj.key = 'key1';
                     proj.name = 'project1';
                     proj.last_modified = '2017-05-11T10:20:22.874779+02:00';
-                    return Observable.of(proj);
+                    return of(proj);
                 } else {
                     let proj = new Project();
                     proj.key = 'key1';
                     proj.name = 'project1';
                     proj.last_modified = '2017-06-11T10:20:22.874779+02:00';
-                    return Observable.of(proj);
+                    return of(proj);
                 }
             case 'key2':
                 let proj2 = new Project();
                 proj2.key = 'key2';
                 proj2.name = 'project2';
                 proj2.last_modified = '2017-05-11T10:20:22.874779+02:00';
-                return Observable.of(proj2);
+                return of(proj2);
         }
 
     }
@@ -270,7 +270,7 @@ class MockApplicationService extends ApplicationService {
                 let app = new Application();
                 app.name = 'app1';
                 app.last_modified = '2017-05-11T10:20:22.874779+02:00';
-                return Observable.of(app);
+                return of(app);
             }
             if (appName === 'app2') {
                 if (this.callAPP2 === 0) {
@@ -278,12 +278,12 @@ class MockApplicationService extends ApplicationService {
                     let app = new Application();
                     app.name = 'app2';
                     app.last_modified = '2017-05-11T10:20:22.874779+02:00';
-                    return Observable.of(app);
+                    return of(app);
                 } else {
                     let app = new Application();
                     app.name = 'app2';
                     app.last_modified = '2017-06-11T10:20:22.874779+02:00';
-                    return Observable.of(app);
+                    return of(app);
                 }
 
             }
@@ -293,7 +293,7 @@ class MockApplicationService extends ApplicationService {
                 let app = new Application();
                 app.name = 'app3';
                 app.last_modified = '2017-05-11T10:20:22.874779+02:00';
-                return Observable.of(app);
+                return of(app);
             }
         }
     }
@@ -307,7 +307,7 @@ class MockPipelineService extends PipelineService {
                 let pip = new Pipeline();
                 pip.name = 'pip1';
                 pip.last_modified = 1494490822;
-                return Observable.of(pip);
+                return of(pip);
             }
             if (pipName === 'pip2') {
                 if (this.callPIP2 === 0) {
@@ -315,12 +315,12 @@ class MockPipelineService extends PipelineService {
                     let pip = new Pipeline();
                     pip.name = 'pip1';
                     pip.last_modified = 1494490822;
-                    return Observable.of(pip);
+                    return of(pip);
                 } else {
                     let pip = new Pipeline();
                     pip.name = 'pip1';
                     pip.last_modified = 1497169222;
-                    return Observable.of(pip);
+                    return of(pip);
                 }
 
             }
@@ -330,7 +330,7 @@ class MockPipelineService extends PipelineService {
                 let pip = new Pipeline();
                 pip.name = 'pip3';
                 pip.last_modified = 1494490822;
-                return Observable.of(pip);
+                return of(pip);
             }
         }
     }

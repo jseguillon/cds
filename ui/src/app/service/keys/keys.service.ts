@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 import {AllKeys, Keys} from '../../model/keys.model';
 
 @Injectable()
@@ -20,8 +21,8 @@ export class KeyService {
             p = p.append('appName', appName);
         }
 
-        return this._http.get<Keys>('/project/' + key + '/all/keys', {params: p}).map(keys => {
+        return this._http.get<Keys>('/project/' + key + '/all/keys', {params: p}).pipe(map(keys => {
             return Keys.formatForSelect(keys);
-        });
+        }));
     }
 }

@@ -64,13 +64,13 @@ describe('CDS: Application Run Component', () => {
 class MockActivatedRoutes extends ActivatedRoute {
     constructor() {
         super();
-        this.params = Observable.of({buildNumber: '123'});
+        this.params = of({buildNumber: '123'});
 
         this.snapshot = new ActivatedRouteSnapshot();
         Object.defineProperty(this.snapshot, 'children', []);
         this.snapshot.queryParams = { envName: 'NoEnv'};
 
-        this.queryParams = Observable.of({ envName: 'NoEnv'});
+        this.queryParams = of({ envName: 'NoEnv'});
 
         let project = new Project();
         project.key = 'key1';
@@ -81,7 +81,7 @@ class MockActivatedRoutes extends ActivatedRoute {
         let pipeline = new Pipeline();
         pipeline.name = 'pipName';
 
-        this.data = Observable.of({ project: project, application: application, pipeline: pipeline });
+        this.data = of({ project: project, application: application, pipeline: pipeline });
 
 
     }

@@ -10,8 +10,8 @@ import {ProjectStore} from '../../../../service/project/project.store';
 import {PipelineStore} from '../../../../service/pipeline/pipeline.store';
 import {TranslateService} from '@ngx-translate/core';
 import {ToastService} from '../../../../shared/toast/ToastService';
-import {first, finalize} from 'rxjs/operators';
-import {Observable} from 'rxjs/Observable';
+import {first, finalize, map} from 'rxjs/operators';
+import {Observable, of} from 'rxjs';
 import {cloneDeep} from 'lodash';
 
 @Component({
@@ -150,7 +150,7 @@ export class WorkflowNodeAddWizardComponent implements OnInit {
     createPipeline(): Observable<Pipeline> {
         if (!Pipeline.checkName(this.newPipeline.name)) {
           this.errorPipelineNamePattern = true;
-          return Observable.of(null);
+          return of(null);
         }
 
         this.loadingCreatePipeline = true;
@@ -158,52 +158,52 @@ export class WorkflowNodeAddWizardComponent implements OnInit {
         return this._pipStore.createPipeline(this.project.key, this.newPipeline)
             .pipe(
               first(),
+                map((pip) => {
+                    this._toast.success('', this._translate.instant('pipeline_added'));
+                    this.node.pipeline_id = pip.id;
+                    this.pipelineSection = 'application';
+                    return pip
+                }),
               finalize(() => this.loadingCreatePipeline = false)
-            )
-            .map((pip) => {
-                this._toast.success('', this._translate.instant('pipeline_added'));
-                this.node.pipeline_id = pip.id;
-                this.pipelineSection = 'application';
-                return pip
-            });
+            );
     }
 
     selectOrCreatePipeline(): Observable<string> {
       if (this.createNewPipeline) {
         return this.createPipeline()
-          .map(() => 'application');
+          .pipe(map(() => 'application'));
       }
       this.pipelineSection = 'application';
-      return Observable.of('application');
+      return of('application');
     }
 
     createApplication(): Observable<Application> {
       if (!Application.checkName(this.newApplication.name)) {
         this.errorApplicationNamePattern = true;
-        return Observable.of(null);
+        return of(null);
       }
 
       this.loadingCreateApplication = true;
       return this._appStore.createApplication(this.project.key, this.newApplication)
           .pipe(
             first(),
+              map((app) => {
+                  this._toast.success('', this._translate.instant('application_created'));
+                  this.node.context.application_id = app.id;
+                  this.pipelineSection = 'environment';
+                  return app;
+              }),
             finalize(() => this.loadingCreateApplication = false)
           )
-          .map((app) => {
-              this._toast.success('', this._translate.instant('application_created'));
-              this.node.context.application_id = app.id;
-              this.pipelineSection = 'environment';
-              return app;
-          });
     }
 
     selectOrCreateApplication(): Observable<string> {
       if (this.createNewApplication && this.newApplication.name) {
         return this.createApplication()
-          .map(() => 'environment');
+          .pipe(map(() => 'environment'));
       }
       this.pipelineSection = 'environment';
-      return Observable.of('environment');
+      return of('environment');
     }
 
     createEnvironment(): Observable<Project>  {
@@ -213,21 +213,21 @@ export class WorkflowNodeAddWizardComponent implements OnInit {
             first(),
             finalize(() => this.loadingCreateEnvironment = false)
           )
-          .map((proj) => {
+          .pipe(map((proj) => {
               this._toast.success('', this._translate.instant('environment_created'));
               this.node.context.environment_id = proj.environments.find((env) => env.name === this.newEnvironment.name).id;
               this.createNode();
               return proj;
-          });
+          }));
     }
 
     selectOrCreateEnvironment() {
       if (this.createNewEnvironment && this.newEnvironment.name) {
         return this.createEnvironment()
-          .map(() => 'done');
+          .pipe(map(() => 'done'));
       }
       this.createNode();
-      return Observable.of('done');
+      return of('done');
     }
 
     public goToNextSection(): Observable<string> {

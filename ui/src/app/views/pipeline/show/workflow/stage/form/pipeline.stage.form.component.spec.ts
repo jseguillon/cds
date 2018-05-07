@@ -70,7 +70,7 @@ class MockToast {
 class MockActivatedRoutes extends ActivatedRoute {
     constructor() {
         super();
-        this.params = Observable.of({key: 'key1', appName: 'app1'});
-        this.queryParams = Observable.of({key: 'key1', appName: 'app1'});
+        this.params = of({key: 'key1', appName: 'app1'});
+        this.queryParams = of({key: 'key1', appName: 'app1'});
     }
 }

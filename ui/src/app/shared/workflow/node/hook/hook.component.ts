@@ -2,7 +2,7 @@ import {AfterViewInit, Component, ElementRef, Input} from '@angular/core';
 import {Workflow, WorkflowNode, WorkflowNodeHook, WorkflowNodeHookConfigValue} from '../../../../model/workflow.model';
 import {Project} from '../../../../model/project.model';
 import {WorkflowEventStore} from '../../../../service/workflow/workflow.event.store';
-import {Subscription} from 'rxjs/Subscription';
+import {Subscription} from 'rxjs';
 
 @Component({
     selector: 'app-workflow-node-hook',

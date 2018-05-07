@@ -75,7 +75,7 @@ describe('CDS: Environment From Component', () => {
         let projStore: ProjectStore = this.injector.get(ProjectStore);
         spyOn(projStore, 'addProjectEnvironment').and.callFake(() => {
            let p = new Project();
-           return Observable.of(p);
+           return of(p);
         });
 
         fixture.debugElement.nativeElement.querySelector('.ui.green.button').click();

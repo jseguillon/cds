@@ -75,7 +75,7 @@ describe('CDS: Pipeline Admin Component', () => {
 
         let pipStore: PipelineStore = injector.get(PipelineStore);
         spyOn(pipStore, 'updatePipeline').and.callFake(() => {
-            return Observable.of(pip);
+            return of(pip);
         });
         fixture.debugElement.nativeElement.querySelector('.ui.button.green.button').click();
 
@@ -92,8 +92,8 @@ class MockToast {
 class MockActivatedRoutes extends ActivatedRoute {
     constructor() {
         super();
-        this.params = Observable.of({key: 'key1', pipName: 'pip1'});
-        this.queryParams = Observable.of({key: 'key1', appName: 'pip1', tab: 'workflow'});
+        this.params = of({key: 'key1', pipName: 'pip1'});
+        this.queryParams = of({key: 'key1', appName: 'pip1', tab: 'workflow'});
     }
 }
 

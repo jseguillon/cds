@@ -3,8 +3,8 @@ import {Project} from '../../../../../model/project.model';
 import {Environment} from '../../../../../model/environment.model';
 import {ProjectStore} from '../../../../../service/project/project.store';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Subscription} from 'rxjs/Subscription';
-import {flatMap} from 'rxjs/operators';
+import {Subscription} from 'rxjs';
+import {flatMap, map} from 'rxjs/operators';
 
 @Component({
     selector: 'app-environment-list',
@@ -34,14 +34,14 @@ export class ProjectEnvironmentListComponent implements OnInit, DoCheck, OnDestr
     ngOnInit(): void {
         let currentTab;
         this.routerSubscription = this._routerActivatedRoute.queryParams
-          .map((q) => {
-            if (q['envName']) {
-                this.envInRoute = q['envName'];
-            }
-            currentTab = q['tab'];
-            return q;
-          })
           .pipe(
+              map((q) => {
+                  if (q['envName']) {
+                      this.envInRoute = q['envName'];
+                  }
+                  currentTab = q['tab'];
+                  return q;
+              }),
               flatMap((q) => this._projectStore.getProjectEnvironmentsResolver(this.project.key))
           )
           .subscribe((proj) => {

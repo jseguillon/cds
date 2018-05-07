@@ -2,9 +2,9 @@ import {Component} from '@angular/core';
 import {NavbarService} from '../../service/navbar/navbar.service';
 import {ProjectStore} from '../../service/project/project.store';
 import {WorkflowStore} from '../../service/workflow/workflow.store';
-import {NavbarProjectData} from 'app/model/navbar.model';
-import {Subscription} from 'rxjs/Subscription';
+import {Subscription} from 'rxjs';
 import {AutoUnsubscribe} from '../../shared/decorator/autoUnsubscribe';
+import {NavbarProjectData} from '../../model/navbar.model';
 
 @Component({
     selector: 'app-home',

@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Project, LoadOpts} from '../../model/project.model';
 import {Application} from '../../model/application.model';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 import {Variable} from '../../model/variable.model';
 import {GroupPermission} from '../../model/group.model';
 import {Environment} from '../../model/environment.model';
@@ -93,9 +94,7 @@ export class ProjectService {
      * @returns {Observable<boolean>}
      */
     deleteProject(key: string): Observable<boolean> {
-        return this._http.delete('/project/' + key).map(() => {
-            return true;
-        });
+        return this._http.delete('/project/' + key).pipe(map(() => true));
     }
 
     /**
@@ -125,7 +124,7 @@ export class ProjectService {
      * @returns {Observable<Project>}
      */
     removeVariable(key: string, varName: string): Observable<boolean> {
-        return this._http.delete('/project/' + key + '/variable/' + varName).map(res => true);
+        return this._http.delete('/project/' + key + '/variable/' + varName).pipe(map(() => true));
     }
 
     /**
@@ -155,7 +154,7 @@ export class ProjectService {
      * @returns {Observable<Project>}
      */
     removePermission(key: string, gp: GroupPermission): Observable<boolean> {
-        return this._http.delete('/project/' + key + '/group/' + gp.group.name).map(res => true);
+        return this._http.delete('/project/' + key + '/group/' + gp.group.name).pipe(map(() => true));
     }
 
     /**
@@ -312,7 +311,7 @@ export class ProjectService {
      * @returns {Observable<boolean>}
      */
     removeEnvironmentPermission(key: string, envName: string, gp: GroupPermission): Observable<boolean> {
-        return this._http.delete('/project/' + key + '/environment/' + envName + '/group/' + gp.group.name).map(res => true);
+        return this._http.delete('/project/' + key + '/environment/' + envName + '/group/' + gp.group.name).pipe(map(() => true));
     }
 
     /**

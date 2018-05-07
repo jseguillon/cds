@@ -14,7 +14,7 @@ import {TranslateService} from '@ngx-translate/core';
 import {HookService} from '../../../../../service/hook/hook.service';
 import {finalize} from 'rxjs/operators';
 import {WorkflowEventStore} from '../../../../../service/workflow/workflow.event.store';
-import {Subscription} from 'rxjs/Subscription';
+import {Subscription} from 'rxjs';
 
 @Component({
     selector: 'app-workflow-sidebar-hook',

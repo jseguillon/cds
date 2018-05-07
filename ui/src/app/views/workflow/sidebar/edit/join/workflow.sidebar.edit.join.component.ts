@@ -10,7 +10,7 @@ import {TranslateService} from '@ngx-translate/core';
 import {WorkflowTriggerJoinComponent} from '../../../../../shared/workflow/join/trigger/trigger.join.component';
 import {ActiveModal} from 'ng2-semantic-ui/dist';
 import {WorkflowEventStore} from '../../../../../service/workflow/workflow.event.store';
-import {Subscription} from 'rxjs/Subscription';
+import {Subscription} from 'rxjs';
 
 @Component({
     selector: 'app-workflow-sidebar-edit-join',

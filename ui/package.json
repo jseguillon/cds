@@ -8,7 +8,7 @@
     "npm": ">= 3.0.0"
   },
   "scripts": {
-    "start": "ng serve --environment dev",
+    "start": "ng serve -c dev",
     "test": "ng lint && ng test --watch false --code-coverage",
     "pree2e": "webdriver-manager update --standalone false --gecko false",
     "e2e": "protractor",
@@ -23,16 +23,16 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/common": "~5.2.0",
-    "@angular/compiler": "~5.2.0",
-    "@angular/core": "~5.2.0",
-    "@angular/forms": "~5.2.0",
-    "@angular/http": "~5.2.0",
-    "@angular/platform-browser": "~5.2.0",
-    "@angular/platform-browser-dynamic": "~5.2.0",
-    "@angular/router": "~5.2.0",
+    "@angular/common": "~6.0.0",
+    "@angular/compiler": "~6.0.0",
+    "@angular/core": "~6.0.0",
+    "@angular/forms": "~6.0.0",
+    "@angular/http": "~6.0.0",
+    "@angular/platform-browser": "~6.0.0",
+    "@angular/platform-browser-dynamic": "~6.0.0",
+    "@angular/router": "~6.0.0",
     "@ngui/auto-complete": "^0.16.1",
-    "@ngx-translate/core": "^9.0.1",
+    "@ngx-translate/core": "^10.0.0",
     "@ngx-translate/http-loader": "^2.0.0",
     "@types/dagre-d3": "^0.4.36",
     "angular2-moment": "^1.0.0",
@@ -62,13 +62,14 @@
     "ngx-auto-scroll": "https://github.com/NagRock/ngx-auto-scroll/tarball/b76673d546be89719015fc68dbdb4677b6596366",
     "ngx-clipboard": "^10.0.0",
     "ngx-md": "3.1.0",
-    "rxjs": "5.5.2",
+    "rxjs": "6.1.0",
+    "rxjs-compat": "^6.1.0",
     "semantic-ui": "2.2.13",
     "ts-helpers": "^1.1.1",
     "zone.js": "0.8.12"
   },
   "devDependencies": {
-    "@angular/cli": "^1.7.3",
+    "@angular/cli": "^6.0.0",
     "@angular/compiler-cli": "~5.2.0",
     "@compodoc/compodoc": "^1.0.0-beta.8",
     "@types/dagre": "^0.7.35",
@@ -93,6 +94,7 @@
     "tslint": "~5.9.1",
     "typescript": "2.5.3",
     "webdriver-manager": "10.2.5",
-    "wrench-sui": "0.0.3"
+    "wrench-sui": "0.0.3",
+    "@angular-devkit/build-angular": "~0.6.0"
   }
 }

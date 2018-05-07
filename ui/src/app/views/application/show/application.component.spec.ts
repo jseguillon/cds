@@ -93,7 +93,7 @@ describe('CDS: Application', () => {
             let mapApp: Map<string, Application> = Map<string, Application>();
             let app: Application = new Application();
             app.name = 'app1';
-            return Observable.of(mapApp.set('key1-app1', app));
+            return of(mapApp.set('key1-app1', app));
         });
 
         // Create component
@@ -132,7 +132,7 @@ describe('CDS: Application', () => {
             let mapApp: Map<string, Application> = Map<string, Application>();
             let app: Application = new Application();
             app.name = 'app1';
-            return Observable.of(mapApp.set('key1-app1', app));
+            return of(mapApp.set('key1-app1', app));
         });
 
         // Create component
@@ -144,7 +144,7 @@ describe('CDS: Application', () => {
 
         spyOn(appStore, 'addVariable').and.callFake(() => {
             let app: Application = new Application();
-            return Observable.of(app);
+            return of(app);
         });
 
         let v: Variable = new Variable();
@@ -161,7 +161,7 @@ describe('CDS: Application', () => {
             let mapApp: Map<string, Application> = Map<string, Application>();
             let app: Application = new Application();
             app.name = 'app1';
-            return Observable.of(mapApp.set('key1-app1', app));
+            return of(mapApp.set('key1-app1', app));
         });
 
         // Create component
@@ -173,7 +173,7 @@ describe('CDS: Application', () => {
 
         spyOn(appStore, 'updateVariable').and.callFake(() => {
             let app: Application = new Application();
-            return Observable.of(app);
+            return of(app);
         });
 
         let v: Variable = new Variable();
@@ -190,7 +190,7 @@ describe('CDS: Application', () => {
             let mapApp: Map<string, Application> = Map<string, Application>();
             let app: Application = new Application();
             app.name = 'app1';
-            return Observable.of(mapApp.set('key1-app1', app));
+            return of(mapApp.set('key1-app1', app));
         });
 
         // Create component
@@ -202,7 +202,7 @@ describe('CDS: Application', () => {
 
         spyOn(appStore, 'removeVariable').and.callFake(() => {
             let app: Application = new Application();
-            return Observable.of(app);
+            return of(app);
         });
 
         let v: Variable = new Variable();
@@ -219,7 +219,7 @@ describe('CDS: Application', () => {
             let mapApp: Map<string, Application> = Map<string, Application>();
             let app: Application = new Application();
             app.name = 'app1';
-            return Observable.of(mapApp.set('key1-app1', app));
+            return of(mapApp.set('key1-app1', app));
         });
 
         // Create component
@@ -231,7 +231,7 @@ describe('CDS: Application', () => {
 
         spyOn(appStore, 'addPermission').and.callFake(() => {
             let app: Application = new Application();
-            return Observable.of(app);
+            return of(app);
         });
 
         let gp: GroupPermission = new GroupPermission();
@@ -248,7 +248,7 @@ describe('CDS: Application', () => {
             let mapApp: Map<string, Application> = Map<string, Application>();
             let app: Application = new Application();
             app.name = 'app1';
-            return Observable.of(mapApp.set('key1-app1', app));
+            return of(mapApp.set('key1-app1', app));
         });
 
         // Create component
@@ -260,7 +260,7 @@ describe('CDS: Application', () => {
 
         spyOn(appStore, 'updatePermission').and.callFake(() => {
             let app: Application = new Application();
-            return Observable.of(app);
+            return of(app);
         });
 
         let gp: GroupPermission = new GroupPermission();
@@ -277,7 +277,7 @@ describe('CDS: Application', () => {
             let mapApp: Map<string, Application> = Map<string, Application>();
             let app: Application = new Application();
             app.name = 'app1';
-            return Observable.of(mapApp.set('key1-app1', app));
+            return of(mapApp.set('key1-app1', app));
         });
 
         // Create component
@@ -289,7 +289,7 @@ describe('CDS: Application', () => {
 
         spyOn(appStore, 'removePermission').and.callFake(() => {
             let app: Application = new Application();
-            return Observable.of(app);
+            return of(app);
         });
 
         let gp: GroupPermission = new GroupPermission();
@@ -307,7 +307,7 @@ describe('CDS: Application', () => {
             let mapApp: Map<string, Application> = Map<string, Application>();
             let app: Application = new Application();
             app.name = 'app1';
-            return Observable.of(mapApp.set('key1-app1', app));
+            return of(mapApp.set('key1-app1', app));
         });
 
         // Create component
@@ -319,7 +319,7 @@ describe('CDS: Application', () => {
 
         spyOn(appStore, 'addNotifications').and.callFake(() => {
             let app: Application = new Application();
-            return Observable.of(app);
+            return of(app);
         });
 
         let n: Notification = new Notification();
@@ -334,7 +334,7 @@ describe('CDS: Application', () => {
 
         spyOn(appStore, 'updateNotification').and.callFake(() => {
             let app: Application = new Application();
-            return Observable.of(app);
+            return of(app);
         });
 
         fixture.componentInstance.notificationEvent(new NotificationEvent('update', notifs));
@@ -342,7 +342,7 @@ describe('CDS: Application', () => {
 
         spyOn(appStore, 'deleteNotification').and.callFake(() => {
             let app: Application = new Application();
-            return Observable.of(app);
+            return of(app);
         });
 
         fixture.componentInstance.notificationEvent(new NotificationEvent('delete', notifs));
@@ -367,8 +367,8 @@ class MockRouter {
 class MockActivatedRoutes extends ActivatedRoute {
     constructor() {
         super();
-        this.params = Observable.of({key: 'key1', appName: 'app1'});
-        this.queryParams = Observable.of({key: 'key1', appName: 'app1', version: 0, branch: 'master'});
+        this.params = of({key: 'key1', appName: 'app1'});
+        this.queryParams = of({key: 'key1', appName: 'app1', version: 0, branch: 'master'});
 
         this.snapshot = new ActivatedRouteSnapshot();
 
@@ -379,6 +379,6 @@ class MockActivatedRoutes extends ActivatedRoute {
         };
         this.snapshot.queryParams = {key: 'key1', appName: 'app1', version: 0, branch: 'master'};
 
-        this.data = Observable.of({ project: project });
+        this.data = of({ project: project });
     }
 }

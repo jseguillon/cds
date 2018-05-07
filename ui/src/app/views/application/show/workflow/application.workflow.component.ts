@@ -8,9 +8,9 @@ import {ApplicationPipelineLinkComponent} from './pipeline/link/pipeline.link.co
 import {Branch, Remote} from '../../../../model/repositories.model';
 import {Router} from '@angular/router';
 import {cloneDeep} from 'lodash';
-import {Observable} from 'rxjs/Observable';
-import {finalize} from 'rxjs/operators';
-import 'rxjs/add/observable/zip';
+import {Observable, zip} from 'rxjs';
+import {finalize, map} from 'rxjs/operators';
+
 
 @Component({
     selector: 'app-application-workflow',
@@ -72,10 +72,11 @@ export class ApplicationWorkflowComponent implements OnInit, OnDestroy {
         this.branches = null;
         this.loading.remote = true;
         this.loading.branch = true;
-        Observable.zip(
+        zip(
             this._appWorkflow.getRemotes(this.project.key, this.application.name),
-            this._appWorkflow.getBranches(this.project.key, this.application.name, this.applicationFilter.remote),
-            (remotes, branches) => {
+            this._appWorkflow.getBranches(this.project.key, this.application.name, this.applicationFilter.remote)
+        ).pipe(
+            map(() => (remotes, branches) => {
                 this.remotes = remotes;
                 this.branches = branches;
                 if (Array.isArray(remotes) && remotes.length) {
@@ -84,13 +85,12 @@ export class ApplicationWorkflowComponent implements OnInit, OnDestroy {
                 }
 
                 if (!this.applicationFilter.branch) {
-                  this.setDefaultBranchFilter();
-                  this.changeWorkerEvent.emit(false);
+                    this.setDefaultBranchFilter();
+                    this.changeWorkerEvent.emit(false);
                 }
 
                 this.loadVersions(this.project.key, this.application.name).subscribe();
-            }
-        ).pipe(
+            }),
             finalize(() => {
                 this.loading.remote = false;
                 this.loading.branch = false;
@@ -310,8 +310,10 @@ export class ApplicationWorkflowComponent implements OnInit, OnDestroy {
     loadVersions(key: string, appName: string): Observable<Array<string>> {
         this.loading.version = true;
         return this._appWorkflow.getVersions(key, appName, this.applicationFilter.branch || 'master', this.applicationFilter.remote)
-            .pipe(finalize(() => this.loading.version = false))
-            .map((versions) => this.versions = [' ', ...versions.map((v) => v.toString())]);
+            .pipe(
+                map((versions) => this.versions = [' ', ...versions.map((v) => v.toString())]),
+                finalize(() => this.loading.version = false)
+            );
 
     }
 

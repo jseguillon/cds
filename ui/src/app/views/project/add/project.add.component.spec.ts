@@ -73,7 +73,7 @@ describe('CDS: Project Show Component', () => {
         let router: Router = injector.get(Router);
 
         spyOn(projectStore, 'createProject').and.callFake(() => {
-            return Observable.of(true);
+            return of(true);
         });
 
         spyOn(router, 'navigate').and.callFake(() => {

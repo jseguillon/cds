@@ -91,7 +91,7 @@ describe('CDS: Project Admin Component', () => {
         tick(250);
 
         spyOn(projectStore, 'updateProject').and.callFake(() => {
-            return Observable.of(p);
+            return of(p);
         });
 
         let compiled = fixture.debugElement.nativeElement;
