@@ -56,10 +56,12 @@ func (b *eventsBroker) getSubEvents(uuid string) (map[string][]sdk.EventSubscrip
 }
 
 func (b *eventsBroker) setSubEvents(uuid string, subEvents map[string][]sdk.EventSubscription) {
+	log.Warning("Set subevents for %s", uuid)
 	b.cache.Set(cache.Key(eventsKey, uuid), subEvents)
 }
 
 func (b *eventsBroker) deleteSubEvents(uuid string) {
+	log.Warning("Delete subevents for %s", uuid)
 	b.cache.Delete(cache.Key(eventsKey, uuid))
 }
 
