@@ -306,6 +306,7 @@ func (b *eventsBroker) ServeHTTP() Handler {
 }
 
 func (b *eventsBroker) manageEvent(receivedEvent sdk.Event, eventS string) {
+	log.Warning("Event received: %s", receivedEvent.EventType)
 	b.mutex.Lock()
 	defer b.mutex.Unlock()
 	for _, i := range b.clients {
@@ -362,7 +363,10 @@ func (b *eventsBroker) handleEvent(store cache.Store, event sdk.Event, eventS st
 
 	var events map[string][]sdk.EventSubscription
 	if !store.Get(cache.Key(eventsKey, subscriber.UUID), &events) {
+		log.Warning("Nothing in cache for uuid: %s", subscriber.UUID)
 		events = make(map[string][]sdk.EventSubscription)
+	} else {
+		log.Warning("In cache: %v", events[sdk.EventSubsWorkflowRuns])
 	}
 
 	if strings.HasPrefix(event.EventType, "sdk.EventRunWorkflow") {
@@ -379,6 +383,7 @@ func (b *eventsBroker) handleEvent(store cache.Store, event sdk.Event, eventS st
 					break
 				}
 			}
+			log.Warning("RunWorkflowSent: %v", sent)
 			if sent {
 				return
 			}

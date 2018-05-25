@@ -25,6 +25,7 @@ onmessage = function (e) {
                 }
                 return;
             }
+            console.log(JSON.parse(evt.data).type_event);
             postMessage(JSON.parse(evt.data));
         };
     }

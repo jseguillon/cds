@@ -282,12 +282,12 @@ func (s *RedisStore) GetMessageFromSubscription(c context.Context, pb PubSub) (s
 	}
 
 	msg, _ := rps.ReceiveTimeout(200 * time.Millisecond)
+
 	redisMsg, ok := msg.(*redis.Message)
 	if msg != nil {
 		if ok {
 			return redisMsg.Payload, nil
 		}
-		log.Warning("redis.GetMessage> Message casting error for %v of type %T", msg, msg)
 	}
 
 	ticker := time.NewTicker(250 * time.Millisecond).C
@@ -302,7 +302,6 @@ func (s *RedisStore) GetMessageFromSubscription(c context.Context, pb PubSub) (s
 			var ok bool
 			redisMsg, ok = msg.(*redis.Message)
 			if !ok {
-				log.Warning("redis.GetMessage> Message casting error for %v of type %T", msg, msg)
 				continue
 			}
 		case <-c.Done():
